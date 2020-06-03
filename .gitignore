@@ -32,5 +32,5 @@ build/
 
 
 ### Custom ###
-application.properties
+*.properties
 data.sql
