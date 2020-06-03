@@ -1,9 +1,12 @@
 package com.effectivo.BugTracker.web.controller;
 
+import com.effectivo.BugTracker.exception.ResourceNotFoundException;
 import com.effectivo.BugTracker.persistence.model.Bug;
 import com.effectivo.BugTracker.persistence.model.dto.BugDto;
 import com.effectivo.BugTracker.persistence.service.BugService;
 import com.effectivo.BugTracker.persistence.service.ProjectService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/projects")
+@Api(tags="Bug Controller", description = "Provide CRUD options for Bugs")
 public class BugController {
 
     @Autowired
@@ -32,9 +36,11 @@ public class BugController {
         this.bugService = bugService;
     }
 
+    @ApiOperation(value = "View an specific Bug from a Project", response = BugDto.class)
     @GetMapping("/{projectId}/bugs/{bugId}")
     public BugDto getBugById(@PathVariable (value = "projectId") Long projectId,
                           @PathVariable (value = "bugId") Long bugId) {
+
         if (!projectService.existById(projectId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ProjectId " + projectId + " not found");
         }
@@ -82,11 +88,18 @@ public class BugController {
 
     @DeleteMapping("/{projectId}/bugs/{bugId}")
     public void deleteBug(@PathVariable (value = "projectId") Long projectId,
-                          @PathVariable (value = "bugId") Long bugId){
-        if (!projectService.existById(projectId) || !bugService.existById(bugId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ProjectId " + projectId + " or BugId " + bugId + " not found");
+                          @PathVariable (value = "bugId") Long bugId) {
+
+        try{
+           // if (projectService.existById(projectId) || bugService.existById(bugId)) {
+                bugService.deleteBug(bugId);
+
+        } catch (ResourceNotFoundException ex){
+            throw new ResourceNotFoundException("ProjectId " + projectId + " or BugId " + bugId + " not found", ex);
         }
-        bugService.deleteBug(bugId);
+
+
+
     }
 
     //Converting to DTO - ENTITY

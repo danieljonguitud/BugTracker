@@ -1,9 +1,7 @@
 package com.effectivo.BugTracker.persistence.service;
 
 import com.effectivo.BugTracker.persistence.model.Bug;
-import com.effectivo.BugTracker.persistence.model.Project;
 import com.effectivo.BugTracker.persistence.repository.IBugRepository;
-import com.effectivo.BugTracker.persistence.repository.IProjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
