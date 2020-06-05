@@ -89,19 +89,13 @@ public class BugController {
     @DeleteMapping("/{projectId}/bugs/{bugId}")
     public void deleteBug(@PathVariable (value = "projectId") Long projectId,
                           @PathVariable (value = "bugId") Long bugId) {
-
-        try{
-           // if (projectService.existById(projectId) || bugService.existById(bugId)) {
-                bugService.deleteBug(bugId);
-
-        } catch (ResourceNotFoundException ex){
-            throw new ResourceNotFoundException("ProjectId " + projectId + " or BugId " + bugId + " not found", ex);
+        if (!projectService.existById(projectId) || !bugService.existById(bugId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ProjectId " + projectId + " or BugId " + bugId + " not found");
         }
-
+        bugService.deleteBug(bugId);
 
 
     }
-
     //Converting to DTO - ENTITY
 
     private BugDto convertToDto(Bug bug) {
