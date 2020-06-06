@@ -1,6 +1,5 @@
 package com.effectivo.BugTracker.web.controller;
 
-import com.effectivo.BugTracker.exception.ResourceNotFoundException;
 import com.effectivo.BugTracker.persistence.model.Bug;
 import com.effectivo.BugTracker.persistence.model.dto.BugDto;
 import com.effectivo.BugTracker.persistence.service.BugService;
@@ -10,7 +9,6 @@ import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
