@@ -1,14 +1,18 @@
 package com.effectivo.BugTracker.web.controller;
 
 import com.effectivo.BugTracker.persistence.model.Bug;
+import com.effectivo.BugTracker.persistence.model.BugCount;
 import com.effectivo.BugTracker.persistence.model.dto.BugDto;
 import com.effectivo.BugTracker.persistence.service.BugService;
 import com.effectivo.BugTracker.persistence.service.ProjectService;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping(value = "/projects")
 @Api(tags="Bug Controller", description = "Provide CRUD options for Bugs")
@@ -94,6 +99,12 @@ public class BugController {
 
 
     }
+
+    @GetMapping("/bugs")
+    public BugCount countingBugs(){
+        return new BugCount(bugService.countBugs());
+    }
+
     //Converting to DTO - ENTITY
 
     private BugDto convertToDto(Bug bug) {

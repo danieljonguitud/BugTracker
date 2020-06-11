@@ -46,4 +46,8 @@ public class BugService {
     public Boolean existById(Long id){
         return IBugRepository.existsById(id);
     }
+
+    public Integer countBugs(){
+        return IBugRepository.findAll().size();
+    }
 }

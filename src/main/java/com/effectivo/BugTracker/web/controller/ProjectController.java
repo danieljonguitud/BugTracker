@@ -9,10 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping(value = "/projects")
 public class ProjectController {
@@ -83,5 +85,9 @@ public class ProjectController {
             Optional<Project> oldProject = projectService.getProjectById(projectDto.getId());
         }
         return project;
+    }
+
+    private Optional<Project> exampleToGetNewestEntry(Project id){
+        return projectService.findAllProjects().stream().max(Comparator.comparing(Project::getUpdatedAt));
     }
 }
