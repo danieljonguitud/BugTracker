@@ -12,6 +12,7 @@ import java.util.Optional;
 @Service
 public class ProjectService {
 
+    @Autowired
     private IProjectRepository IProjectRepository;
 
     public ProjectService (IProjectRepository IProjectRepository){
@@ -26,9 +27,9 @@ public class ProjectService {
        return IProjectRepository.save(project);
     }
 
-    public List<Project> findAllProjects(){
+    public List<Project> findAllProjectsByUserId(Long userId){
         List<Project> retrievedProjects = new ArrayList<>();
-        IProjectRepository.findAll().forEach(retrievedProjects::add);
+        IProjectRepository.findAllByUserId(userId).forEach(retrievedProjects::add);
         return retrievedProjects;
     }
 

@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping(value = "/projects")
-@Api(tags="Bug Controller", description = "Provide CRUD options for Bugs")
+@Api(tags="Bugs Controller", description = "Provide CRUD options for Bugs")
 public class BugController {
 
     @Autowired
-    private BugService bugService;
+    private final BugService bugService;
 
     @Autowired
     private ProjectService projectService;
