@@ -2,9 +2,13 @@ package com.effectivo.BugTracker.web.controller;
 
 import com.effectivo.BugTracker.persistence.model.Bug;
 import com.effectivo.BugTracker.persistence.model.BugCount;
+import com.effectivo.BugTracker.persistence.model.Project;
+import com.effectivo.BugTracker.persistence.model.User;
 import com.effectivo.BugTracker.persistence.model.dto.BugDto;
 import com.effectivo.BugTracker.persistence.service.BugService;
 import com.effectivo.BugTracker.persistence.service.ProjectService;
+import com.effectivo.BugTracker.persistence.service.UserService;
+import com.effectivo.BugTracker.util.JwtUtil;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,8 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8081")
@@ -31,6 +35,12 @@ public class BugController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -101,8 +111,33 @@ public class BugController {
     }
 
     @GetMapping("/bugs")
-    public BugCount countingBugs(){
-        return new BugCount(bugService.countBugs());
+    public BugCount countingBugs(HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+
+        String token;
+        String username;
+
+        token = authorizationHeader.substring(7);
+        username = jwtUtil.extractUsername(token);
+
+        Long userId = userService.findByUsername(username).getId();
+        List<Project> projects = projectService.findAllProjectsByUserId(userId);
+
+        List<Integer> results = new ArrayList<>();
+
+        for (Project project:
+        projects){
+            results.add(bugService.countBugs(project.getId()));
+        }
+
+        Integer count = 0;
+
+        for (Integer i : results){
+            count += i;
+        }
+
+        return new BugCount(count);
+
     }
 
     //Converting to DTO - ENTITY
