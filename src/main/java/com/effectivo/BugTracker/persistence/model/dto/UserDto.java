@@ -24,15 +24,13 @@ public class UserDto {
     @NotNull
     @NotEmpty
     private String password;
-    private String matchingPassword;
 
-    public UserDto(@NotNull @NotEmpty String username, @NotNull @NotEmpty String firstName, @NotNull @NotEmpty String lastName, @NotNull @NotEmpty String email, @NotNull @NotEmpty String password, String matchingPassword) {
+    public UserDto(@NotNull @NotEmpty String username, @NotNull @NotEmpty String firstName, @NotNull @NotEmpty String lastName, @NotNull @NotEmpty String email, @NotNull @NotEmpty String password) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.matchingPassword = matchingPassword;
     }
 
     public String getUsername() {
@@ -73,13 +71,5 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getMatchingPassword() {
-        return matchingPassword;
-    }
-
-    public void setMatchingPassword(String matchingPassword) {
-        this.matchingPassword = matchingPassword;
     }
 }
