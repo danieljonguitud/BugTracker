@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping(value = "/projects")
 @Api(tags="Projects Controller", description = "Provide CRUD options for Projects")

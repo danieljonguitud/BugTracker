@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping(value = "/projects")
 @Api(tags="Bugs Controller", description = "Provide CRUD options for Bugs")
