@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(value = "http://localhost:8081")
+
 @Service
 public class ProjectService {
 
