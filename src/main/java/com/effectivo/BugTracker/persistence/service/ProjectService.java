@@ -4,11 +4,13 @@ import com.effectivo.BugTracker.persistence.model.Project;
 import com.effectivo.BugTracker.persistence.repository.IProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(value = "http://localhost:8081")
 @Service
 public class ProjectService {
 
