@@ -29,7 +29,7 @@ public class Bug {
     @NotNull
     private String description;
 
-    @Column(columnDefinition = "smallint default 1", nullable = false)
+    @Column(columnDefinition = "smallint", nullable = false)
     private Integer status;
 
     private LocalDateTime fixedAt;
