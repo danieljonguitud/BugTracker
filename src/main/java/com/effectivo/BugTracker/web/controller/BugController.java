@@ -73,8 +73,9 @@ public class BugController {
         Bug newBug = convertToEntity(newBugDto);
         projectService.getProjectById(projectId).map(project -> {
             newBug.setProject(project);
+            newBug.setStatus(1);
             bugService.createBug(newBug);
-            return "1";
+            return project;
         }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "ProjectId " + projectId + " not found"));
     }
 
@@ -119,7 +120,7 @@ public class BugController {
         token = authorizationHeader.substring(7);
         username = jwtUtil.extractUsername(token);
 
-        Long userId = userService.findByUsername(username).getId();
+        Long userId = userService.findByUsername(username).get().getId();
         List<Project> projects = projectService.findAllProjectsByUserId(userId);
 
         List<Integer> results = new ArrayList<>();

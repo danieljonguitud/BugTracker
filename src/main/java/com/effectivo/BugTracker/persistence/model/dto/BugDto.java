@@ -10,7 +10,7 @@ public class BugDto {
 
     private String description;
 
-    private Integer status = 1;
+    private Integer status;
 
     private LocalDateTime fixedAt;
 
