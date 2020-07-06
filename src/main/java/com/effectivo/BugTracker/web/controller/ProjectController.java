@@ -7,6 +7,7 @@ import com.effectivo.BugTracker.persistence.service.ProjectService;
 import com.effectivo.BugTracker.persistence.service.UserService;
 import com.effectivo.BugTracker.util.JwtUtil;
 import io.swagger.annotations.Api;
+import io.swagger.models.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -50,18 +51,26 @@ public class ProjectController {
         token = authorizationHeader.substring(7);
         username = jwtUtil.extractUsername(token);
 
-        Long userId = userService.findByUsername(username).getId();
+        Long userId = userService.findByUsername(username).get().getId();
         List<Project> projects = projectService.findAllProjectsByUserId(userId);
         return projects.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // @GetMapping("/{id}")
-    // public ProjectDto getProjectById(@PathVariable Long id){
-        // Optional<Project> project = projectService.getProjectById(id);
-        // Project value = project.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    @GetMapping("/{id}")
+    public ProjectDto getProjectById(HttpServletRequest request, @PathVariable Long id){
+        String authorizationHeader = request.getHeader("Authorization");
+        token = authorizationHeader.substring(7);
+        username = jwtUtil.extractUsername(token);
+        Project value = null;
 
-        // return convertToDto(value);
-    // }
+        if (userService.findByUsername(username).isPresent()) {
+            Optional<Project> project = projectService.getProjectById(id);
+            value = project.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return convertToDto(value);
+     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
@@ -70,7 +79,7 @@ public class ProjectController {
         token = authorizationHeader.substring(7);
         username = jwtUtil.extractUsername(token);
 
-        User user = userService.findByUsername(username);
+        User user = userService.findByUsername(username).get();
 
         Project newProject = convertToEntity(newProjectDto);
         newProject.setUser(user);
@@ -84,7 +93,7 @@ public class ProjectController {
         token = authorizationHeader.substring(7);
         username = jwtUtil.extractUsername(token);
 
-        User user = userService.findByUsername(username);
+        User user = userService.findByUsername(username).get();
 
         Project newProject = convertToEntity(newProjectDto);
 
