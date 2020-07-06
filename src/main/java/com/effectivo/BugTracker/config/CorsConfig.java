@@ -16,7 +16,8 @@ public class CorsConfig {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:8081",
                                 "http://bug-tracker.nagisando.com",
-                                "http://bug-tracker.danieljonguitud.com");
+                                "http://bug-tracker.danieljonguitud.com")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE");;
             }
         };
     }
