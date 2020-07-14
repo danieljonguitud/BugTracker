@@ -90,6 +90,7 @@ public class BugController {
         Bug updateBug = convertToEntity(updateBugDto);
         bugService.getBugById(bugId).map(bug -> {
             bug.setTitle(updateBug.getTitle());
+            bug.setStatus(updateBug.getStatus());
             bug.setDescription(updateBug.getDescription());
             return bugService.updateBug(bug);
         }).orElseGet(() -> {
